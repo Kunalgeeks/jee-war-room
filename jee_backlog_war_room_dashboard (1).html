@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JEE Backlog War Room & Syllabus Dashboard</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons for UI -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f',
+            },
+            slate: {
+              950: '#090d16',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .code-font {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Custom Scrollbar for sleek dark look */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-brand-500 selection:text-slate-950">
+
+  <!-- Header Section -->
+  <header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-brand-600 to-amber-400 flex items-center justify-center shadow-lg shadow-brand-900/20">
+          <i class="fa-solid fa-fire text-slate-950 text-xl"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+            JEE WAR ROOM <span class="text-xs bg-brand-500/10 text-brand-400 border border-brand-500/20 px-2 py-0.5 rounded font-mono">OCT 31 ROADMAP</span>
+          </h1>
+          <p class="text-xs text-slate-400 font-medium">Personalized Cloud-Synced Recovery Engine</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <!-- Cloud Status Indicator -->
+        <button onclick="toggleCloudModal()" class="flex items-center space-x-2 text-xs bg-slate-800 hover:bg-slate-750 px-3 py-1.5 rounded-lg border border-slate-700 transition">
+          <span id="cloud-status-indicator" class="h-2.5 w-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+          <span id="cloud-status-text" class="text-slate-300 font-semibold font-mono">Cloud: Sync Off</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- Cloud Sync Config Modal -->
+    <div id="cloud-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 relative shadow-2xl">
+        <button onclick="toggleCloudModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-lg"><i class="fa-solid fa-xmark"></i></button>
+        <div class="space-y-2">
+          <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-cloud text-brand-500"></i> Cloud Sync Settings</h3>
+          <p class="text-xs text-slate-400">Deploy this file to your own domain or GitHub Pages. To automatically persist all changes safely to your own database, initialize your free Firebase credentials below:</p>
+        </div>
+        <div class="space-y-3">
+          <div>
+            <label class="text-[10px] uppercase font-bold text-slate-500 block mb-1">Firebase Config (JSON Object)</label>
+            <textarea id="firebase-config-input" rows="6" placeholder='{
+  "apiKey": "...",
+  "authDomain": "...",
+  "projectId": "...",
+  "storageBucket": "...",
+  "messagingSenderId": "...",
+  "appId": "..."
+}' class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-emerald-400 focus:outline-none focus:border-brand-500 code-font"></textarea>
+          </div>
+          <p class="text-[10px] text-amber-400 italic">💡 If empty, data is kept safely in your session. Paste your credentials to synchronize instantly across devices.</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="saveCloudConfig()" class="w-full bg-brand-500 hover:bg-brand-400 text-slate-950 font-bold py-2.5 rounded-xl text-sm transition">Save & Sync</button>
+          <button onclick="disconnectCloud()" class="w-1/3 bg-slate-850 hover:bg-slate-800 text-slate-400 font-semibold py-2.5 rounded-xl text-sm transition">Clear Configuration</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 1: Crucial Milestones Countdowns -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Box 1: October 31 Deadline -->
+      <div class="bg-gradient-to-br from-slate-900 to-slate-950 p-6 rounded-2xl border border-slate-800 hover:border-brand-500/30 transition duration-300 flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-slate-900/20 text-9xl font-bold select-none group-hover:scale-110 transition-transform duration-500 code-font">OCT</div>
+        <div class="z-10">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Target 1: Complete Syllabus</span>
+            <span class="bg-brand-500/10 text-brand-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-brand-500/20">Hard Stop</span>
+          </div>
+          <div class="mb-4">
+            <span id="oct-days" class="text-5xl font-extrabold text-white tracking-tight code-font">130</span>
+            <span class="text-slate-400 font-medium ml-1">Days Left</span>
+          </div>
+          <p class="text-sm text-slate-400">Target Date: <strong class="text-white">31 October 2026</strong>. Focus on high-yield chapters, formulas, and structural retention before the wedding freeze.</p>
+        </div>
+      </div>
+
+      <!-- Box 2: Wedding Function Phase -->
+      <div class="bg-gradient-to-br from-slate-900 to-slate-950 p-6 rounded-2xl border border-slate-800 hover:border-amber-500/30 transition duration-300 flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-slate-900/20 text-9xl font-bold select-none group-hover:scale-110 transition-transform duration-500 code-font">NOV</div>
+        <div class="z-10">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Target 2: Brother's Wedding</span>
+            <span class="bg-amber-500/10 text-amber-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-amber-500/20">The Lockout</span>
+          </div>
+          <div class="mb-4">
+            <span id="nov-days" class="text-5xl font-extrabold text-white tracking-tight code-font">158</span>
+            <span class="text-slate-400 font-medium ml-1">Days Left</span>
+          </div>
+          <p class="text-sm text-slate-400">Wedding Date: <strong class="text-white">28–30 November 2026</strong>. Requires 10–15 days of active family coordination. Maintain early morning maintenance sessions.</p>
+        </div>
+      </div>
+
+      <!-- Box 3: Total Backlog Lectures Left -->
+      <div class="bg-gradient-to-br from-slate-900 to-slate-950 p-6 rounded-2xl border border-slate-800 hover:border-emerald-500/30 transition duration-300 flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-slate-900/20 text-9xl font-bold select-none group-hover:scale-110 transition-transform duration-500 code-font">LEC</div>
+        <div class="z-10">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400">Required Backlog Velocity</span>
+            <span id="velocity-status" class="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-emerald-500/20">Calculating</span>
+          </div>
+          <div class="mb-4">
+            <span id="total-pending-lecs" class="text-5xl font-extrabold text-white tracking-tight code-font">42</span>
+            <span class="text-slate-400 font-medium ml-1">Lecs Left</span>
+          </div>
+          <p class="text-sm text-slate-400">We need to clear <strong id="weekly-lec-rate" class="text-white font-bold">2.3</strong> backlog lectures per week to finish everything on schedule.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Section 1.5: Organic Chemistry Daily Streak Tracker -->
+    <section class="bg-gradient-to-r from-slate-900 to-amber-950/20 border border-slate-800 rounded-3xl p-6 shadow-lg">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+          <div class="h-12 w-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-xl">
+            <i class="fa-solid fa-flask-vial"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              Organic Chemistry Daily Mission <span class="text-xs bg-amber-500/20 text-brand-300 border border-amber-500/30 px-2 py-0.5 rounded font-mono">1 LEC/DAY RECORDED</span>
+            </h3>
+            <p class="text-sm text-slate-400">Keep this daily streak alive alongside your primary backlog clearance and live lectures.</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end border-t border-slate-800 md:border-0 pt-4 md:pt-0">
+          <div class="text-right">
+            <span class="text-[10px] text-slate-500 uppercase font-bold block">Current Streak</span>
+            <span class="text-xl font-bold text-amber-400 code-font" id="oc-streak-count">0 Days</span>
+          </div>
+          <div class="h-10 w-px bg-slate-800 hidden md:block"></div>
+          <div class="text-right">
+            <span class="text-[10px] text-slate-500 uppercase font-bold block">Total Watched</span>
+            <span class="text-xl font-bold text-white code-font" id="oc-total-watched">0 / 40 Lecs</span>
+          </div>
+          <button onclick="incrementOCStreak()" class="px-5 py-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-sm hover:bg-amber-400 transition flex items-center gap-2 shrink-0">
+            <i class="fa-solid fa-fire animate-pulse"></i> Checked 1 Lec
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Interactive Backlog Tracker -->
+    <section class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+      <div class="p-6 sm:p-8 border-b border-slate-800 bg-slate-900/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-brand-500"></i> Calibrated Backlog & Syllabus Board
+          </h2>
+          <p class="text-sm text-slate-400 mt-1">Adjust lecture values directly on the cards. Track completed versus total lectures exactly as seen in your logs.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <button onclick="filterSubject('all')" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-750 transition" id="btn-all">All Subjects</button>
+          <button onclick="filterSubject('physics')" class="px-4 py-2 rounded-xl bg-slate-800/50 text-slate-300 border border-slate-800 hover:bg-slate-800 transition" id="btn-physics">Physics</button>
+          <button onclick="filterSubject('chemistry')" class="px-4 py-2 rounded-xl bg-slate-800/50 text-slate-300 border border-slate-800 hover:bg-slate-800 transition" id="btn-chemistry">Chemistry</button>
+          <button onclick="filterSubject('math')" class="px-4 py-2 rounded-xl bg-slate-800/50 text-slate-300 border border-slate-800 hover:bg-slate-800 transition" id="btn-math">Mathematics</button>
+        </div>
+      </div>
+
+      <!-- Subject Summary Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-6 bg-slate-950/60 border-b border-slate-800">
+        <!-- Physics Card -->
+        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-850 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Physics Lectures</p>
+            <h3 id="phy-pct" class="text-2xl font-bold text-white code-font mt-1">0% Complete</h3>
+          </div>
+          <div class="text-brand-500 text-3xl opacity-20"><i class="fa-solid fa-atom"></i></div>
+        </div>
+        <!-- Chemistry Card -->
+        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-850 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Chemistry Lectures</p>
+            <h3 id="chem-pct" class="text-2xl font-bold text-white code-font mt-1">0% Complete</h3>
+          </div>
+          <div class="text-emerald-500 text-3xl opacity-20"><i class="fa-solid fa-flask"></i></div>
+        </div>
+        <!-- Math Card -->
+        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-850 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Math Lectures</p>
+            <h3 id="math-pct" class="text-2xl font-bold text-white code-font mt-1">0% Complete</h3>
+          </div>
+          <div class="text-indigo-500 text-3xl opacity-20"><i class="fa-solid fa-calculator"></i></div>
+        </div>
+      </div>
+
+      <!-- Live Chapter Grid -->
+      <div class="p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="chapters-container">
+          <!-- Dynamically Populated Chapters -->
+        </div>
+      </div>
+      
+      <!-- User Custom Chapter Adder -->
+      <div class="p-6 bg-slate-950 border-t border-slate-800 flex flex-col xl:flex-row items-center justify-between gap-4">
+        <div class="w-full xl:w-auto">
+          <h4 class="text-sm font-semibold text-white">Add/Append new chapters or topics:</h4>
+          <p class="text-xs text-slate-400 mt-0.5">Define chapter name, subject, currently finished lectures, and total coaching lectures.</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-2 w-full xl:w-auto max-w-2xl">
+          <input type="text" id="custom-chapter-name" placeholder="Name (e.g. GOC, Fluids)" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-slate-200 focus:outline-none focus:border-brand-500 w-full sm:w-48">
+          <select id="custom-chapter-sub" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
+            <option value="physics">Physics</option>
+            <option value="chemistry">Chemistry</option>
+            <option value="math">Math</option>
+          </select>
+          <input type="number" id="custom-chapter-done" placeholder="Done Lecs" min="0" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-slate-200 focus:outline-none focus:border-brand-500 w-full sm:w-24">
+          <input type="number" id="custom-chapter-total" placeholder="Total Lecs" min="1" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-slate-200 focus:outline-none focus:border-brand-500 w-full sm:w-24">
+          <button onclick="addCustomChapter()" class="px-6 py-2.5 rounded-xl bg-brand-500 text-slate-950 font-bold text-sm hover:bg-brand-400 transition flex items-center justify-center gap-2 shrink-0">
+            <i class="fa-solid fa-plus"></i> Add
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- New Section 2.5: To-Do Planner & Dynamic Time-Blocker Column Group -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+      <!-- DAILY TO-DO PLANNER -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-circle-check text-brand-500"></i> Daily War Room To-Do
+              </h2>
+              <p class="text-xs text-slate-400 mt-1">Set targets specifically for today's operational block.</p>
+            </div>
+            <span id="todo-completion-ratio" class="bg-brand-500/15 text-brand-400 font-mono text-xs px-2.5 py-1 rounded-full border border-brand-500/20 font-bold">0/0 Tasks</span>
+          </div>
+
+          <!-- To Do Quick Input -->
+          <div class="flex gap-2 bg-slate-950 p-2 rounded-xl border border-slate-850">
+            <input type="text" id="todo-input" placeholder="e.g., Solve 10 questions of AOD" class="w-full bg-transparent px-2 text-sm text-slate-200 focus:outline-none focus:ring-0">
+            <select id="todo-category" class="bg-slate-900 text-xs text-slate-400 border border-slate-800 rounded-lg px-2 focus:outline-none">
+              <option value="math">Math</option>
+              <option value="physics">Physics</option>
+              <option value="chemistry">Chemistry</option>
+              <option value="general">General</option>
+            </select>
+            <button onclick="addTodoTask()" class="h-9 w-9 bg-brand-500 text-slate-950 rounded-lg hover:bg-brand-400 flex items-center justify-center shrink-0 font-bold transition">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+
+          <!-- Task List Container -->
+          <div id="todo-list" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+            <!-- Dynamic Tasks Go Here -->
+          </div>
+        </div>
+
+        <div class="border-t border-slate-800/80 pt-4 mt-4 flex items-center justify-between text-xs text-slate-500">
+          <span>Manage your priority tasks daily.</span>
+          <button onclick="clearCompletedTodos()" class="text-slate-400 hover:text-white transition flex items-center gap-1">
+            <i class="fa-solid fa-trash-can"></i> Clear Completed
+          </button>
+        </div>
+      </div>
+
+      <!-- Time-Block Planner -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-clock text-amber-500"></i> Dynamic Daily Time-Blocker
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">Adjust sliders to find your optimal distribution balance for deep work.</p>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Slider 1: Sleep -->
+          <div>
+            <div class="flex justify-between text-sm mb-2">
+              <span class="text-slate-300 font-semibold flex items-center gap-2"><i class="fa-solid fa-bed text-sky-400"></i> Rest & Recovery Sleep</span>
+              <span id="val-sleep" class="text-brand-400 font-bold code-font">7.5 Hours</span>
+            </div>
+            <input type="range" id="slide-sleep" min="5" max="9" step="0.5" value="7.5" oninput="updateTimeBlocks()" class="w-full accent-brand-500 bg-slate-800 rounded-lg appearance-none h-2">
+            <p class="text-[10px] text-slate-500 mt-1">Aim for 7.5 hours. Recovery sleep is your single highest-yielding asset.</p>
+          </div>
+
+          <!-- Slider 2: Live Classes -->
+          <div>
+            <div class="flex justify-between text-sm mb-2">
+              <span class="text-slate-300 font-semibold flex items-center gap-2"><i class="fa-solid fa-laptop text-brand-500"></i> Live Batch Lectures & Classes</span>
+              <span id="val-live" class="text-brand-400 font-bold code-font">4.5 Hours</span>
+            </div>
+            <input type="range" id="slide-live" min="0" max="8" step="0.5" value="4.5" oninput="updateTimeBlocks()" class="w-full accent-brand-500 bg-slate-800 rounded-lg appearance-none h-2">
+            <p class="text-[10px] text-slate-500 mt-1">Time spent in daily live lectures. Treat this with maximum active engagement.</p>
+          </div>
+
+          <!-- Slider 3: Backlog Clearance -->
+          <div>
+            <div class="flex justify-between text-sm mb-2">
+              <span class="text-slate-300 font-semibold flex items-center gap-2"><i class="fa-solid fa-person-running text-emerald-400"></i> Focused Backlog Clearance</span>
+              <span id="val-backlog" class="text-brand-400 font-bold code-font">2.5 Hours</span>
+            </div>
+            <input type="range" id="slide-backlog" min="0" max="6" step="0.5" value="2.5" oninput="updateTimeBlocks()" class="w-full accent-brand-500 bg-slate-800 rounded-lg appearance-none h-2">
+            <p class="text-[10px] text-slate-500 mt-1">Isolated, distraction-free study blocks purely devoted to previous backlogs.</p>
+          </div>
+
+          <!-- Hardcoded Commitment: Organic Chemistry 1 Lecture -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-850 flex items-center justify-between">
+            <div class="flex items-center gap-2 text-xs text-slate-300 font-semibold">
+              <i class="fa-solid fa-video text-amber-500"></i> Daily Organic Chemistry (Recorded)
+            </div>
+            <span class="text-amber-400 font-bold code-font text-xs">1.5 Hours (Fixed)</span>
+          </div>
+
+          <!-- Remaining Hours Calculations -->
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-850 grid grid-cols-2 gap-4">
+            <div class="text-center p-3 rounded-xl bg-slate-900/50">
+              <p class="text-xs text-slate-400 font-semibold">Active Self-Study</p>
+              <h4 id="val-self-study" class="text-xl font-bold text-white code-font mt-1">5.2 Hours</h4>
+              <p class="text-[10px] text-slate-500 mt-0.5">Sheets, HW & Revision</p>
+            </div>
+            <div class="text-center p-3 rounded-xl bg-slate-900/50">
+              <p class="text-xs text-slate-400 font-semibold">Leisure/Errands/Walks</p>
+              <h4 id="val-leisure" class="text-xl font-bold text-white code-font mt-1">2.8 Hours</h4>
+              <p class="text-[10px] text-slate-500 mt-0.5">Meals, walks, hygiene</p>
+            </div>
+          </div>
+
+          <!-- Dynamic Analysis Prompt -->
+          <div id="routine-alert" class="p-4 rounded-xl bg-brand-500/10 text-brand-400 border border-brand-500/20 text-xs flex items-start gap-3">
+            <i class="fa-solid fa-circle-info text-base mt-0.5"></i>
+            <div>
+              <strong class="block text-white mb-0.5">Routine Status: Perfectly Balanced</strong>
+              <span id="routine-alert-text">You have allocated plenty of time for deep self-study. Ensure you take a 25-minute power walk to maintain blood flow and energy levels.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Section 2.7: Interactive Monthly Calendar Planner (Full Width) -->
+    <section class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+      <div class="p-6 sm:p-8 border-b border-slate-800 bg-slate-900/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-calendar-days text-brand-500"></i> Interactive Monthly War Planner
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">Click any date to view, log, or edit targets. Dates with logged targets will show indicator dots.</p>
+        </div>
+        
+        <!-- Month Selector Header -->
+        <div class="flex items-center space-x-3 bg-slate-950 p-1.5 rounded-xl border border-slate-800 shrink-0 self-start md:self-auto">
+          <button onclick="navigateMonth(-1)" class="h-9 w-9 text-slate-400 hover:text-white bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center transition">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <span id="calendar-month-year" class="text-xs font-bold text-white w-28 text-center code-font">June 2026</span>
+          <button onclick="navigateMonth(1)" class="h-9 w-9 text-slate-400 hover:text-white bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center transition">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Calendar & Plan Side-by-Side Panel -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 border-t border-slate-800">
+        
+        <!-- Grid System Calendar -->
+        <div class="lg:col-span-8 p-6 space-y-4">
+          <!-- Calendar Day Headers -->
+          <div class="grid grid-cols-7 gap-2 text-center text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+          <!-- Days Container -->
+          <div id="calendar-days-grid" class="grid grid-cols-7 gap-2">
+            <!-- Rendered Dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- Selected Day Plan Sheet -->
+        <div class="lg:col-span-4 bg-slate-950/40 border-t lg:border-t-0 lg:border-l border-slate-800 p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] uppercase font-extrabold text-slate-500 tracking-wider">Plan Sheet</span>
+              <span id="calendar-selected-date-header" class="text-xs font-bold text-amber-400 code-font">2026-06-23</span>
+            </div>
+            
+            <div class="space-y-2">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Daily Objectives & Notes:</label>
+              <textarea id="calendar-day-note" rows="8" placeholder="Type objectives for this day... (e.g., Complete Atomic configuration sheets, Revise EMI notes)" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-brand-500 placeholder-slate-600 leading-relaxed"></textarea>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800/60 flex items-center justify-between">
+            <span class="text-[9px] text-slate-500 italic">Auto-saves to local database.</span>
+            <button onclick="saveSelectedDayPlan()" class="px-5 py-2 rounded-xl bg-brand-500 hover:bg-brand-400 text-slate-950 font-bold text-xs transition flex items-center gap-1.5 shadow-md shadow-brand-500/10">
+              <i class="fa-solid fa-floppy-disk"></i> Save Day Plan
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Strategy Guides Grid -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+      <!-- Goggins Mindset Strategy Guide (Copied for UI balance or left to reference standard JEE protocols) -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-graduation-cap text-indigo-400"></i> The Permanent Retention Rulebook
+        </h2>
+        <p class="text-sm text-slate-400">
+          The secret to scoring high in JEE Main/Advanced without last-minute cramming lies in systematic structural active recall.
+        </p>
+        <div class="space-y-3 text-xs text-slate-300">
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-850">
+            <strong class="text-white">1. Stop passively re-reading notes:</strong>
+            <p class="text-slate-400 mt-1">If you are revising, hide the solution immediately. Write down the starting equation, force your brain to remember the next step, and actively calculate.</p>
+          </div>
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-850">
+            <strong class="text-white">2. The 3-Problem Rule:</strong>
+            <p class="text-slate-400 mt-1">For any backlog formula (e.g. MOD or LCD limits), do not watch long lectures. Solve exactly 3 basic, 3 medium, and 3 hard problems to lock down the formula application.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- November Wedding Survival Strategy Plan -->
+      <div class="bg-gradient-to-r from-slate-900 to-indigo-950/40 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-full border border-indigo-500/20 self-start">The November Wedding Strategy</span>
+          <span class="text-xs font-bold text-white code-font">5:00 AM – 8:00 AM (3H)</span>
+        </div>
+        <h3 class="text-xl font-bold text-white">How to Survive the November 28-30 Chaos</h3>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          During the 10-15 days of family coordinating and wedding preparation, your regular schedule will break. That is completely normal. 
+          Your baseline is simple: Wake up early, run a **3-hour quick formula review block** before the house starts moving, then close the books and help your brother with zero guilt.
+        </p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Footer Info / Credits -->
+  <footer class="border-t border-slate-800 bg-slate-950 py-8 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4">
+      <p>Custom Built Strategy Engine for JEE Aspirants. Syncing to secure cloud databases.</p>
+      <p class="mt-2 text-slate-600">Ensure to check off your milestones as you clear them.</p>
+    </div>
+  </footer>
+
+  <!-- Firebase Setup & Dashboard Logic (Strict Single-File ESM Setup) -->
+  <script type="module">
+    // Firebase Imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Date Targets
+    const today = new Date('2026-06-23');
+    const octDeadline = new Date('2026-10-31');
+    const novWedding = new Date('2026-11-28');
+
+    // UI Date states for Calendar Planner
+    let calendarCurrentDate = new Date('2026-06-23');
+    let calendarSelectedDateStr = '2026-06-23';
+
+    // State Objects
+    let chapters = [
+      { id: 1, name: "EMI & AC", subject: "physics", state: "ongoing", completedLecs: 0, totalLecs: 15, notes: "Currently running in coaching" },
+      { id: 2, name: "Magnetism", subject: "physics", state: "major-backlog", completedLecs: 0, totalLecs: 5, notes: "Already done in coaching" },
+      { id: 3, name: "AOD", subject: "math", state: "ongoing", completedLecs: 0, totalLecs: 4, notes: "Currently running in coaching" },
+      { id: 4, name: "MOD", subject: "math", state: "minor-backlog", completedLecs: 5, totalLecs: 7, notes: "Already done in coaching" },
+      { id: 5, name: "LCD", subject: "math", state: "major-backlog", completedLecs: 7, totalLecs: 16, notes: "Already done in coaching" },
+      { id: 6, name: "Rad & Kinetics", subject: "chemistry", state: "minor-backlog", completedLecs: 8, totalLecs: 12, notes: "Already done in coaching" },
+      { id: 7, name: "Electrochemistry", subject: "chemistry", state: "ongoing", completedLecs: 0, totalLecs: 3, notes: "Currently running in coaching" }
+    ];
+
+    let currentFilter = 'all';
+    let ocStreak = 0;
+    let ocTotalWatched = 0;
+    const ocTarget = 40;
+
+    // Daily To-Do Planner State
+    let todos = [
+      { id: 1, text: "Revise MOD half angle formulas", category: "math", done: false },
+      { id: 2, text: "Finish daily Organic Chemistry recorded lecture", category: "chemistry", done: false },
+      { id: 3, text: "Solve 5 problems of EMI", category: "physics", done: false }
+    ];
+
+    // Calendar Specific Plans Store
+    let calendarPlans = {
+      "2026-06-23": "Recovery Day. Set up the war room syllabus dashboard and review limits calculations."
+    };
+
+    // Firebase & Cloud State Integration
+    let db = null;
+    let auth = null;
+    let currentUser = null;
+    let isCloudConfigured = false;
+    
+    // Default appId setup as required by environment guidelines
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'jee-backlog-war-room';
+
+    // Toggle Config Modal View
+    window.toggleCloudModal = function() {
+      const modal = document.getElementById('cloud-modal');
+      modal.classList.toggle('hidden');
+    }
+
+    // Save cloud config to browser session storage & initialize
+    window.saveCloudConfig = function() {
+      const inputVal = document.getElementById('firebase-config-input').value.trim();
+      if (!inputVal) return;
+      try {
+        JSON.parse(inputVal); // test valid json
+        localStorage.setItem('jee_war_room_fb_config', inputVal);
+        toggleCloudModal();
+        showToast("Saving cloud settings... Re-initializing sync.", "success");
+        setTimeout(() => { location.reload(); }, 1200);
+      } catch(e) {
+        showToast("Invalid JSON syntax. Please verify credentials format.", "error");
+      }
+    }
+
+    // Disconnect cloud settings
+    window.disconnectCloud = function() {
+      localStorage.removeItem('jee_war_room_fb_config');
+      toggleCloudModal();
+      showToast("Cloud disconnected. Reverting to persistent session cache.", "success");
+      setTimeout(() => { location.reload(); }, 1200);
+    }
+
+    // Toast Alert Helper
+    function showToast(message, type = "success") {
+      let toast = document.createElement('div');
+      toast.className = `fixed bottom-5 right-5 px-5 py-3 rounded-xl border text-xs font-bold shadow-xl z-50 transition transform duration-300 translate-y-10 opacity-0 ${
+        type === 'success' ? 'bg-emerald-950/90 text-emerald-400 border-emerald-500/30' : 'bg-rose-950/90 text-rose-400 border-rose-500/30'
+      }`;
+      toast.innerText = message;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.remove('translate-y-10', 'opacity-0');
+      }, 100);
+      
+      setTimeout(() => {
+        toast.classList.add('translate-y-10', 'opacity-0');
+        setTimeout(() => { toast.remove(); }, 300);
+      }, 3000);
+    }
+
+    // Init Database & Auth Services
+    async function initFirebase() {
+      let configData = null;
+      
+      // 1. Check for runtime environment configuration provided by system
+      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+        try {
+          configData = JSON.parse(__firebase_config);
+        } catch(e) {
+          console.error("Failed to parse runtime firebase config", e);
+        }
+      }
+      
+      // 2. Check for manual config injected by the user in dashboard modal
+      if (!configData) {
+        const manualConfig = localStorage.getItem('jee_war_room_fb_config');
+        if (manualConfig) {
+          try {
+            configData = JSON.parse(manualConfig);
+            // Pre-fill textarea in modal
+            document.getElementById('firebase-config-input').value = manualConfig;
+          } catch(e) {
+            console.error("Failed to parse user manual firebase config", e);
+          }
+        }
+      }
+
+      if (configData) {
+        try {
+          const app = initializeApp(configData);
+          auth = getAuth(app);
+          db = getFirestore(app);
+
+          // Rule 3: Auth Before Queries
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              currentUser = user;
+              isCloudConfigured = true;
+              document.getElementById('cloud-status-indicator').className = 'h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse';
+              document.getElementById('cloud-status-text').innerText = 'Cloud: Connected';
+              setupFirestoreSync();
+            }
+          });
+        } catch(e) {
+          console.error("Firebase connection error:", e);
+          document.getElementById('cloud-status-text').innerText = 'Cloud: Error';
+          document.getElementById('cloud-status-indicator').className = 'h-2.5 w-2.5 rounded-full bg-rose-500';
+          loadLocalFallback();
+        }
+      } else {
+        // No Firebase Config found, fall back to offline storage
+        loadLocalFallback();
+      }
+    }
+
+    // Firestore Synchronization Setup (Rule 1 & Rule 2 compliant)
+    function setupFirestoreSync() {
+      if (!currentUser || !db) return;
+
+      // Unique strict path for user private state (RULE 1)
+      const stateDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'dashboard', 'user_state');
+
+      // Setup Listeners with Error Callback
+      onSnapshot(stateDocRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const cloudData = docSnap.data();
+          if (cloudData.chapters) chapters = cloudData.chapters;
+          if (cloudData.todos) todos = cloudData.todos;
+          if (cloudData.calendarPlans) calendarPlans = cloudData.calendarPlans;
+          if (typeof cloudData.ocStreak !== 'undefined') ocStreak = cloudData.ocStreak;
+          if (typeof cloudData.ocTotalWatched !== 'undefined') ocTotalWatched = cloudData.ocTotalWatched;
+          
+          // Re-render UI Elements with updated synchronized data
+          renderChapters();
+          renderTodos();
+          renderCalendar();
+          updateOCDisplay();
+          updateTimeBlocks();
+        } else {
+          // If state doesn't exist on cloud yet, create initial placeholder
+          pushStateToCloud();
+        }
+      }, (error) => {
+        console.error("Firestore sync error:", error);
+        showToast("Error synchronizing with secure cloud database.", "error");
+      });
+    }
+
+    // Save/Push dashboard state updates to database
+    async function pushStateToCloud() {
+      if (isCloudConfigured && currentUser && db) {
+        const stateDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'dashboard', 'user_state');
+        try {
+          await setDoc(stateDocRef, {
+            chapters: chapters,
+            todos: todos,
+            calendarPlans: calendarPlans,
+            ocStreak: ocStreak,
+            ocTotalWatched: ocTotalWatched,
+            lastUpdated: new Date().toISOString()
+          }, { merge: true });
+        } catch(e) {
+          console.error("Failed to write to cloud:", e);
+        }
+      } else {
+        // Save to offline storage as fallback
+        saveLocalFallback();
+      }
+    }
+
+    // Offline / LocalStorage fallback helpers
+    function saveLocalFallback() {
+      const fallbackState = {
+        chapters, todos, calendarPlans, ocStreak, ocTotalWatched
+      };
+      localStorage.setItem('jee_war_room_offline_cache', JSON.stringify(fallbackState));
+    }
+
+    function loadLocalFallback() {
+      const cache = localStorage.getItem('jee_war_room_offline_cache');
+      if (cache) {
+        try {
+          const offlineData = JSON.parse(cache);
+          if (offlineData.chapters) chapters = offlineData.chapters;
+          if (offlineData.todos) todos = offlineData.todos;
+          if (offlineData.calendarPlans) calendarPlans = offlineData.calendarPlans;
+          if (typeof offlineData.ocStreak !== 'undefined') ocStreak = offlineData.ocStreak;
+          if (typeof offlineData.ocTotalWatched !== 'undefined') ocTotalWatched = offlineData.ocTotalWatched;
+        } catch(e) {
+          console.error("Failed to load local offline cache:", e);
+        }
+      }
+      // Render components immediately
+      renderChapters();
+      renderTodos();
+      renderCalendar();
+      updateOCDisplay();
+      updateTimeBlocks();
+    }
+
+    // Dynamic Countdown Calculations
+    function updateCountdown() {
+      const msPerDay = 24 * 60 * 60 * 1000;
+      const daysToOct = Math.ceil((octDeadline - today) / msPerDay);
+      const daysToNov = Math.ceil((novWedding - today) / msPerDay);
+      
+      document.getElementById('oct-days').innerText = daysToOct;
+      document.getElementById('nov-days').innerText = daysToNov;
+    }
+
+    // Increment Organic Chemistry streak
+    window.incrementOCStreak = function() {
+      if (ocTotalWatched < ocTarget) {
+        ocStreak += 1;
+        ocTotalWatched += 1;
+        updateOCDisplay();
+        pushStateToCloud();
+      }
+    }
+
+    function updateOCDisplay() {
+      document.getElementById('oc-streak-count').innerText = `${ocStreak} Days`;
+      document.getElementById('oc-total-watched').innerText = `${ocTotalWatched} / ${ocTarget} Lecs`;
+    }
+
+    // Change chapter lecture counts
+    window.changeLecCount = function(id, amount) {
+      const idx = chapters.findIndex(c => c.id === id);
+      if (idx !== -1) {
+        let ch = chapters[idx];
+        let targetVal = ch.completedLecs + amount;
+        if (targetVal >= 0 && targetVal <= ch.totalLecs) {
+          ch.completedLecs = targetVal;
+          if (ch.completedLecs === ch.totalLecs) {
+            ch.state = 'completed';
+          } else if (ch.completedLecs === 0 && ch.state === 'completed') {
+            ch.state = 'major-backlog';
+          }
+          renderChapters();
+          pushStateToCloud();
+        }
+      }
+    }
+
+    // Toggle Chapter State
+    window.updateChapterState = function(id, newState) {
+      const idx = chapters.findIndex(c => c.id === id);
+      if (idx !== -1) {
+        chapters[idx].state = newState;
+        if (newState === 'completed') {
+          chapters[idx].completedLecs = chapters[idx].totalLecs;
+        }
+        renderChapters();
+        pushStateToCloud();
+      }
+    }
+
+    // Delete Chapter from dashboard
+    window.deleteChapter = function(id) {
+      chapters = chapters.filter(c => c.id !== id);
+      renderChapters();
+      pushStateToCloud();
+    }
+
+    // Add Custom Chapters
+    window.addCustomChapter = function() {
+      const nameInput = document.getElementById('custom-chapter-name');
+      const subInput = document.getElementById('custom-chapter-sub');
+      const doneInput = document.getElementById('custom-chapter-done');
+      const totalInput = document.getElementById('custom-chapter-total');
+
+      if (nameInput.value.trim() === '') return;
+      const total = parseInt(totalInput.value) || 1;
+      const done = Math.min(parseInt(doneInput.value) || 0, total);
+
+      const state = done === total ? 'completed' : 'major-backlog';
+
+      const newCh = {
+        id: Date.now(),
+        name: nameInput.value.trim(),
+        subject: subInput.value,
+        state: state,
+        completedLecs: done,
+        totalLecs: total,
+        notes: "Manually appended"
+      };
+
+      chapters.push(newCh);
+      nameInput.value = '';
+      doneInput.value = '';
+      totalInput.value = '';
+      
+      renderChapters();
+      pushStateToCloud();
+      showToast("Chapter added successfully!");
+    }
+
+    // Filtering logic
+    window.filterSubject = function(subject) {
+      currentFilter = subject;
+      
+      const buttons = ['all', 'physics', 'chemistry', 'math'];
+      buttons.forEach(btn => {
+        const el = document.getElementById(`btn-${btn}`);
+        if (btn === subject) {
+          el.className = "px-4 py-2 rounded-xl bg-brand-500 text-slate-950 font-bold text-xs border border-brand-500 hover:bg-brand-400 transition";
+        } else {
+          el.className = "px-4 py-2 rounded-xl bg-slate-800/50 text-slate-300 border border-slate-800 hover:bg-slate-800 transition";
+        }
+      });
+
+      renderChapters();
+    }
+
+    // Calculations: Subject Progress Metrics
+    function calculateSubjectStats() {
+      const subjects = ['physics', 'chemistry', 'math'];
+      subjects.forEach(sub => {
+        const filtered = chapters.filter(c => c.subject === sub);
+        const totalLecs = filtered.reduce((acc, c) => acc + c.totalLecs, 0);
+        const doneLecs = filtered.reduce((acc, c) => acc + c.completedLecs, 0);
+        
+        const pct = totalLecs === 0 ? 0 : Math.round((doneLecs / totalLecs) * 100);
+        
+        document.getElementById(`${sub === 'physics' ? 'phy' : sub === 'chemistry' ? 'chem' : 'math'}-pct`).innerText = `${pct}% Complete (${doneLecs}/${totalLecs} L)`;
+      });
+    }
+
+    // Calculations: Required Velocity
+    function calculateSyllabusVelocity() {
+      const pendingLecs = chapters.reduce((acc, c) => acc + (c.totalLecs - c.completedLecs), 0);
+      document.getElementById('total-pending-lecs').innerText = pendingLecs;
+
+      const msPerDay = 24 * 60 * 60 * 1000;
+      const daysToOct = Math.ceil((octDeadline - today) / msPerDay);
+      const weeksRemaining = daysToOct / 7;
+
+      const velocity = (pendingLecs / weeksRemaining).toFixed(1);
+      document.getElementById('weekly-lec-rate').innerText = velocity;
+
+      const statusEl = document.getElementById('velocity-status');
+      if (velocity <= 2.0) {
+        statusEl.innerText = "Comfortable Pace";
+        statusEl.className = "bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-emerald-500/20";
+      } else if (velocity <= 4.0) {
+        statusEl.innerText = "Optimized Pace";
+        statusEl.className = "bg-brand-500/10 text-brand-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-brand-500/20";
+      } else {
+        statusEl.innerText = "High Output Required";
+        statusEl.className = "bg-rose-500/10 text-rose-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-rose-500/20";
+      }
+    }
+
+    // Render Chapters dynamically
+    function renderChapters() {
+      const container = document.getElementById('chapters-container');
+      container.innerHTML = '';
+
+      const filtered = chapters.filter(ch => currentFilter === 'all' || ch.subject === currentFilter);
+
+      filtered.forEach(ch => {
+        const borderColors = {
+          'completed': 'border-emerald-500/20 bg-slate-900/30',
+          'ongoing': 'border-blue-500/20 bg-slate-900/30',
+          'minor-backlog': 'border-amber-500/20 bg-slate-900/30',
+          'major-backlog': 'border-rose-500/20 bg-slate-900/30',
+        };
+
+        const badges = {
+          'completed': '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Solid / Done</span>',
+          'ongoing': '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">Live / Running</span>',
+          'minor-backlog': '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">Minor Backlog</span>',
+          'major-backlog': '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">Major Backlog</span>',
+        };
+
+        const subIcons = {
+          'physics': '<i class="fa-solid fa-atom text-brand-400 text-xs"></i>',
+          'chemistry': '<i class="fa-solid fa-flask text-emerald-400 text-xs"></i>',
+          'math': '<i class="fa-solid fa-calculator text-indigo-400 text-xs"></i>',
+        };
+
+        const progressPercent = Math.round((ch.completedLecs / ch.totalLecs) * 100);
+
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-2xl border ${borderColors[ch.state]} flex flex-col justify-between hover:scale-[1.01] transition duration-200`;
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="flex items-center gap-1 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                ${subIcons[ch.subject]} ${ch.subject}
+              </span>
+              ${badges[ch.state]}
+            </div>
+            <h4 class="text-sm font-bold text-white">${ch.name}</h4>
+            <p class="text-[10px] text-slate-500 mt-0.5">${ch.notes}</p>
+            
+            <div class="mt-4 space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-slate-400">Lectures Finished:</span>
+                <span class="font-bold text-white code-font">${ch.completedLecs} / ${ch.totalLecs} <span class="text-slate-500 text-[10px]">(${progressPercent}%)</span></span>
+              </div>
+              <div class="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+                <div class="h-1.5 rounded-full bg-brand-500" style="width: ${progressPercent}%"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between">
+            <div class="flex gap-1">
+              <button onclick="changeLecCount(${ch.id}, -1)" class="h-7 w-7 rounded-lg bg-slate-800 hover:bg-slate-750 text-white text-xs flex items-center justify-center transition" title="Minus 1 Lecture">-1</button>
+              <button onclick="changeLecCount(${ch.id}, 1)" class="h-7 w-7 rounded-lg bg-slate-800 hover:bg-slate-750 text-white text-xs flex items-center justify-center transition" title="Plus 1 Lecture">+1</button>
+            </div>
+            
+            <div class="flex items-center gap-1">
+              <button onclick="updateChapterState(${ch.id}, 'completed')" class="h-6 w-6 rounded-md bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 text-emerald-400 text-[10px] flex items-center justify-center transition" title="Mark Done"><i class="fa-solid fa-check"></i></button>
+              <button onclick="updateChapterState(${ch.id}, 'ongoing')" class="h-6 w-6 rounded-md bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/20 text-blue-400 text-[10px] flex items-center justify-center transition" title="Mark Live"><i class="fa-solid fa-play"></i></button>
+              <button onclick="updateChapterState(${ch.id}, 'minor-backlog')" class="h-6 w-6 rounded-md bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 text-amber-400 text-[10px] flex items-center justify-center transition" title="Mark Minor"><i class="fa-solid fa-triangle-exclamation"></i></button>
+              <button onclick="updateChapterState(${ch.id}, 'major-backlog')" class="h-6 w-6 rounded-md bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-400 text-[10px] flex items-center justify-center transition" title="Mark Major"><i class="fa-solid fa-circle-exclamation"></i></button>
+              <button onclick="deleteChapter(${ch.id})" class="h-6 w-6 rounded-md bg-slate-850 border border-slate-800 hover:bg-slate-800 text-slate-500 hover:text-slate-400 text-xs flex items-center justify-center transition ml-1" title="Delete"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      calculateSubjectStats();
+      calculateSyllabusVelocity();
+    }
+
+    // Sliders Logic & Balanced Routine Builder
+    window.updateTimeBlocks = function() {
+      const sleep = parseFloat(document.getElementById('slide-sleep').value);
+      const live = parseFloat(document.getElementById('slide-live').value);
+      const backlog = parseFloat(document.getElementById('slide-backlog').value);
+
+      document.getElementById('val-sleep').innerText = `${sleep} Hours`;
+      document.getElementById('val-live').innerText = `${live} Hours`;
+      document.getElementById('val-backlog').innerText = `${backlog} Hours`;
+
+      // 24 - Sleep - Live - Backlog - OC (1.5) = Self Study & Leisure distribution (roughly 65/35)
+      const remaining = 24 - sleep - live - backlog - 1.5;
+      const selfStudy = (remaining * 0.65).toFixed(1);
+      const leisure = (remaining * 0.35).toFixed(1);
+
+      document.getElementById('val-self-study').innerText = `${selfStudy} Hours`;
+      document.getElementById('val-leisure').innerText = `${leisure} Hours`;
+
+      // Update Analysis Prompts
+      const alertText = document.getElementById('routine-alert-text');
+      const alertTitle = document.getElementById('routine-alert').querySelector('strong');
+      const alertContainer = document.getElementById('routine-alert');
+
+      if (sleep < 6.0) {
+        alertTitle.innerText = "Sleep Deficit Warning";
+        alertText.innerText = "You have dropped sleep below 6 hours. This will completely fry your analytical mind and lead to burnout. Increase sleep to at least 7.5 hours.";
+        alertContainer.className = "p-4 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs flex items-start gap-3";
+      } else if (selfStudy < 3.5) {
+        alertTitle.innerText = "Low Practice Window Alert";
+        alertText.innerText = "Your self-study/solving hours are too low to complete both Live Class homework and daily OC recorded lecture sheets. Reduce backlog or optimizing sleep.";
+        alertContainer.className = "p-4 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs flex items-start gap-3";
+      } else {
+        alertTitle.innerText = "Perfect Balanced Equilibrium";
+        alertText.innerText = "This routine provides stable learning retention. You are securing healthy recovery, 1.5 hours for daily OC lectures, and steady backlog progress.";
+        alertContainer.className = "p-4 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs flex items-start gap-3";
+      }
+    }
+
+    /* --- TO-DO PLANNER ENGINE --- */
+    window.addTodoTask = function() {
+      const textInput = document.getElementById('todo-input');
+      const categorySelect = document.getElementById('todo-category');
+      
+      const text = textInput.value.trim();
+      if (!text) return;
+
+      const newTask = {
+        id: Date.now(),
+        text: text,
+        category: categorySelect.value,
+        done: false
+      };
+
+      todos.push(newTask);
+      textInput.value = '';
+      renderTodos();
+      pushStateToCloud();
+    }
+
+    window.toggleTodoTask = function(id) {
+      const idx = todos.findIndex(t => t.id === id);
+      if (idx !== -1) {
+        todos[idx].done = !todos[idx].done;
+        renderTodos();
+        pushStateToCloud();
+      }
+    }
+
+    window.deleteTodoTask = function(id) {
+      todos = todos.filter(t => t.id !== id);
+      renderTodos();
+      pushStateToCloud();
+    }
+
+    window.clearCompletedTodos = function() {
+      todos = todos.filter(t => !t.done);
+      renderTodos();
+      pushStateToCloud();
+      showToast("Completed tasks cleared.");
+    }
+
+    function renderTodos() {
+      const container = document.getElementById('todo-list');
+      container.innerHTML = '';
+
+      todos.forEach(task => {
+        const item = document.createElement('div');
+        
+        const catBadgeColors = {
+          'physics': 'bg-brand-500/10 text-brand-400 border-brand-500/20',
+          'chemistry': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+          'math': 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
+          'general': 'bg-slate-800 text-slate-400 border-slate-700'
+        };
+
+        item.className = `flex items-center justify-between p-3 rounded-xl border ${
+          task.done ? 'bg-slate-950/40 border-slate-900 opacity-60' : 'bg-slate-950 border-slate-850'
+        } transition duration-200`;
+
+        item.innerHTML = `
+          <div class="flex items-center space-x-3 w-10/12">
+            <button onclick="toggleTodoTask(${task.id})" class="h-5 w-5 rounded-md border flex items-center justify-center transition shrink-0 ${
+              task.done ? 'bg-brand-500 border-brand-500 text-slate-950' : 'border-slate-700 hover:border-brand-500'
+            }">
+              ${task.done ? '<i class="fa-solid fa-check text-xs font-bold"></i>' : ''}
+            </button>
+            <span class="text-xs text-slate-200 break-words w-full ${task.done ? 'line-through text-slate-500' : ''}">${task.text}</span>
+          </div>
+          <div class="flex items-center space-x-2 shrink-0">
+            <span class="text-[9px] font-bold border rounded px-1.5 py-0.5 uppercase tracking-wide ${catBadgeColors[task.category]}">${task.category}</span>
+            <button onclick="deleteTodoTask(${task.id})" class="text-slate-600 hover:text-slate-400 transition text-xs p-1"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+
+      // Update completion counter
+      const total = todos.length;
+      const completed = todos.filter(t => t.done).length;
+      document.getElementById('todo-completion-ratio').innerText = `${completed}/${total} Tasks`;
+    }
+
+
+    /* --- MONTHLY WAR PLANNER CALENDAR ENGINE --- */
+    window.navigateMonth = function(direction) {
+      calendarCurrentDate.setMonth(calendarCurrentDate.getMonth() + direction);
+      renderCalendar();
+    }
+
+    window.selectCalendarDay = function(dateStr) {
+      calendarSelectedDateStr = dateStr;
+      
+      // Update calendar highlights
+      document.querySelectorAll('.calendar-day-cell').forEach(cell => {
+        if (cell.getAttribute('data-date') === dateStr) {
+          cell.classList.add('border-amber-500/80', 'bg-brand-500/5');
+          cell.classList.remove('border-slate-850');
+        } else {
+          cell.classList.remove('border-amber-500/80', 'bg-brand-500/5');
+          cell.classList.add('border-slate-850');
+        }
+      });
+
+      // Populate note text values
+      document.getElementById('calendar-selected-date-header').innerText = dateStr;
+      document.getElementById('calendar-day-note').value = calendarPlans[dateStr] || '';
+    }
+
+    window.saveSelectedDayPlan = function() {
+      const noteVal = document.getElementById('calendar-day-note').value.trim();
+      if (noteVal) {
+        calendarPlans[calendarSelectedDateStr] = noteVal;
+        showToast(`Plan for ${calendarSelectedDateStr} saved successfully!`);
+      } else {
+        delete calendarPlans[calendarSelectedDateStr];
+        showToast(`Plan cleared for ${calendarSelectedDateStr}.`);
+      }
+      renderCalendar();
+      pushStateToCloud();
+    }
+
+    function renderCalendar() {
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const currentYear = calendarCurrentDate.getFullYear();
+      const currentMonth = calendarCurrentDate.getMonth();
+
+      // Display current calendar header text
+      document.getElementById('calendar-month-year').innerText = `${monthNames[currentMonth]} ${currentYear}`;
+
+      // Get first day of current month offset
+      const firstDayOffset = new Date(currentYear, currentMonth, 1).getDay();
+      const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+      const grid = document.getElementById('calendar-days-grid');
+      grid.innerHTML = '';
+
+      // Render Empty offset slots
+      for (let i = 0; i < firstDayOffset; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = "h-14 sm:h-20 bg-slate-900/10 border border-transparent rounded-xl";
+        grid.appendChild(emptyCell);
+      }
+
+      // Render actual days of the month
+      for (let day = 1; day <= totalDays; day++) {
+        const dayCell = document.createElement('div');
+        const monthStr = String(currentMonth + 1).padStart(2, '0');
+        const dayStr = String(day).padStart(2, '0');
+        const dateString = `${currentYear}-${monthStr}-${dayStr}`;
+
+        const isSelected = dateString === calendarSelectedDateStr;
+        const hasPlans = !!calendarPlans[dateString];
+
+        // Format June 23, 2026 as standard reference "today" highlights
+        const isCurrentSystemToday = (currentYear === 2026 && currentMonth === 5 && day === 23);
+
+        dayCell.className = `calendar-day-cell h-14 sm:h-20 bg-slate-900/50 hover:bg-slate-900/80 border p-2 rounded-xl flex flex-col justify-between cursor-pointer transition relative ${
+          isSelected ? 'border-amber-500/80 bg-brand-500/5' : 'border-slate-850'
+        } ${isCurrentSystemToday ? 'ring-1 ring-blue-500' : ''}`;
+        
+        dayCell.setAttribute('data-date', dateString);
+        dayCell.setAttribute('onclick', `selectCalendarDay('${dateString}')`);
+
+        // Inside day container template
+        dayCell.innerHTML = `
+          <span class="text-xs font-bold ${isCurrentSystemToday ? 'text-blue-400' : 'text-slate-400'}">${day}</span>
+          <div class="flex items-center justify-between">
+            <!-- Indicator Bullet for existing entries -->
+            ${hasPlans ? '<span class="h-1.5 w-1.5 rounded-full bg-amber-500 inline-block animate-pulse"></span>' : '<span></span>'}
+            ${isCurrentSystemToday ? '<span class="text-[8px] bg-blue-500/10 text-blue-400 px-1 rounded uppercase font-semibold">Today</span>' : ''}
+          </div>
+        `;
+
+        grid.appendChild(dayCell);
+      }
+
+      // Update values in plan sheet for selection
+      document.getElementById('calendar-selected-date-header').innerText = calendarSelectedDateStr;
+      document.getElementById('calendar-day-note').value = calendarPlans[calendarSelectedDateStr] || '';
+    }
+
+
+    // Initialize Modules & Setup Configs
+    window.onload = function() {
+      updateCountdown();
+      initFirebase();
+    };
+
+  </script>
+</body>
+</html>
